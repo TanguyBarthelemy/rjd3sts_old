@@ -1,11 +1,12 @@
 Package: rjd3sts
 Type: Package
-Title: Interface to 'JDemetra+ 3.0' Seasonal Adjustment Software
+Title: State Space Framework and Structural Time Series with 'JDemetra+ 3.0'
 Version: 0.3.12
 Authors@R: c(
   person("Jean", "Palate", role = c("aut", "cre"),
                 email = "jean.palate@nbb.be"))
-Description: Interface around 'JDemetra+ 3.x' sa-toolkit (<https://github.com/jdemetra/jdemetra-core>), STACE project.
+Description: Interface around 'JDemetra+ 3.x' (<https://github.com/jdemetra/jdemetra-core>) seasonal adjustment software, STACE project.
+ It offers access to several functions around state space modelss and structural time series.
 Depends:
   R (>= 3.6.0),
 Imports:
