@@ -35,12 +35,12 @@ seasonalbreaks<-function(y, period=NA, level=1, slope=1, noise=1, seasonal=c("Ha
   }
   seasonal<-match.arg(seasonal)
   if (! is.null(X.td)){
-    td<-rjd3modelling::td.forTs(y, X.td)
+    td<-rjd3modelling::td(s=y, groups=X.td)
     X<-cbind(X, td)
   }
 
   so<-.jcall("demetra/sts/r/StsOutliersDetection", "[D", "seasonalBreaks", data, as.integer(period), 
-               as.integer(level), as.integer(slope), as.integer(noise), seasonal, rjd3toolkit:::matrix_r2jd(X))
+               as.integer(level), as.integer(slope), as.integer(noise), seasonal, rjd3toolkit::matrix_r2jd(X))
   
   if (is.ts(y)){
     return (ts(so, frequency = period, start=start(y)))

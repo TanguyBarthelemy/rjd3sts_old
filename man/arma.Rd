@@ -21,9 +21,6 @@ arma(name, ar, fixedar = F, ma, fixedma = F, var = 1, fixedvar = FALSE)
 
 \item{fixedvar}{}
 }
-\value{
-
-}
 \description{
 Title
 }

@@ -29,9 +29,6 @@ ar(
 
 \item{zeroinit}{}
 }
-\value{
-
-}
 \description{
 Title
 }

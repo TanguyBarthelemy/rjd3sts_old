@@ -19,9 +19,6 @@ arima(name, ar, diff, ma, var = 1, fixed = FALSE)
 
 \item{fixed}{}
 }
-\value{
-
-}
 \description{
 Title
 }

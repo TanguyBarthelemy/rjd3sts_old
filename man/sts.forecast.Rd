@@ -20,9 +20,6 @@ sts.forecast(y, model = c("none", "td2", "td3", "td7", "full"), nf = 12)
 
 \item{nf}{}
 }
-\value{
-
-}
 \description{
 Title
 }

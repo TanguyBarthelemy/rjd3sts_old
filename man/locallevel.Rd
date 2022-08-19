@@ -15,9 +15,6 @@ locallevel(name, variance = 0.01, fixed = FALSE, initial = NaN)
 
 \item{initial}{}
 }
-\value{
-
-}
 \description{
 Title
 }

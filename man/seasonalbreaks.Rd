@@ -35,9 +35,6 @@ Contains thr group id fo Mondays... Sundays
 (for instance (1,1,1,1,1,0,0) for week days or (1,1,1,1,1,2,0) for week.saturdays/Sundays variables).
 Contrasts are used. Can be NULL}
 }
-\value{
-
-}
 \description{
 Title
 }

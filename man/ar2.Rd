@@ -29,9 +29,6 @@ ar2(
 
 \item{nfcasts}{}
 }
-\value{
-
-}
 \description{
 Title
 }

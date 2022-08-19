@@ -23,9 +23,6 @@ locallineartrend(
 
 \item{fixedSlopeVariance}{}
 }
-\value{
-
-}
 \description{
 Title
 }
