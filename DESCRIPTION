@@ -12,9 +12,7 @@ Depends:
 Imports:
   rJava (>= 1.0-6),
   RProtoBuf (>= 0.4.17),
-  rjd3toolkit (>= 0.5.1),
-  rjd3modelling (>= 0.5.1),
-  rjd3sa (>= 0.5.1),
+  rjd3toolkit (>= 0.7.0),
   methods
 SystemRequirements: Java JRE 17 or higher
 License: EUPL
