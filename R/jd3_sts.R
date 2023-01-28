@@ -27,7 +27,7 @@ sts<-function(y, X=NULL, X.td=NULL, level=1, slope=1, cycle=-1, noise=1
   }
   jts<-rjd3toolkit::ts_r2jd(y)
   jx<-rjd3toolkit::matrix_r2jd(X)
-  jsts<-.jcall("demetra/sts/r/Bsm", "Ljdplus/sts/BasicStructuralModel;", "process", jts, jx,
+  jsts<-.jcall("demetra/sts/r/Bsm", "Ldemetra/sts/BasicStructuralModel;", "process", jts, jx,
               as.integer(level), as.integer(slope), as.integer(cycle), as.integer(noise), seasonal, as.logical(diffuse.regs), tol)
   buffer<-.jcall("demetra/sts/r/Bsm", "[B", "toBuffer", jsts)
   p<-RProtoBuf::read(sts.Bsm, buffer)

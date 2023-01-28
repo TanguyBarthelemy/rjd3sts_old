@@ -274,11 +274,6 @@ periodic<-function(name, period, harmonics, variance=.01, fixedvariance=FALSE){
 }
 
 
-
-
-
-
-
 #' Title
 #'
 #' @param name 
@@ -531,27 +526,27 @@ equation<-function(name, variance=0, fixed=T){
 #'
 #' @examples
 loading<-function(pos=NULL, weights=NULL){
-  if (is.null(pos)){	
-    jrslt<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(0))
+  if (is.null(pos)){
+    jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(0))
     return (rjd3toolkit::jd3Object(jrslt, LOADING))
   }
   else if (length(pos) == 1){ 
     if (is.null(weights)){
-      jrslt<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(pos))
+      jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(pos))
     }else{
       if (length(pos) != length(weights)){
         return (NULL)
       }
-      jrslt<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "from", as.integer(pos), weights[1])
+      jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "from", as.integer(pos), weights[1])
     }
     return (rjd3toolkit::jd3Object(jrslt, LOADING))
   }else{
     if (is.null(weights))
-      jrslt<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPositions", as.integer(pos))
+      jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPositions", as.integer(pos))
     else{
       if (length(pos) != length(weights))
         return (NULL)
-      jrslt<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "from", as.integer(pos), weights)
+      jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "from", as.integer(pos), weights)
     }
     return (rjd3toolkit::jd3Object(jrslt, LOADING))
   }
@@ -568,14 +563,14 @@ loading<-function(pos=NULL, weights=NULL){
 #' @examples
 varloading<-function(pos, weights){
   if (is.null(pos)){
-    jl<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(0))
+    jl<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(0))
   }
   else if (length(pos) == 1){
-    jl<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(pos))
+    jl<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(pos))
   }else{
-    jl<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPositions", as.integer(pos))
+    jl<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPositions", as.integer(pos))
   }
-  jrslt<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "rescale", jl, as.numeric(weights))
+  jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "rescale", jl, as.numeric(weights))
   return (rjd3toolkit::jd3Object(jrslt, LOADING))
 }
 
@@ -589,9 +584,9 @@ varloading<-function(pos, weights){
 #' @examples
 loading_sum<-function(length=0){
   if (length == 0)
-    jrslt<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "sum")
+    jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "sum")
   else
-    jrslt<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "createPartialSum", as.integer(length))
+    jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "createPartialSum", as.integer(length))
   return (rjd3toolkit::jd3Object(jrslt, LOADING))
 }
 
@@ -605,7 +600,7 @@ loading_sum<-function(length=0){
 #'
 #' @examples
 loading_cyclical<-function(period, startpos){
-  jrslt<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "cyclical", as.integer(period), as.integer(startpos-1))
+  jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "cyclical", as.integer(period), as.integer(startpos-1))
   return (rjd3toolkit::jd3Object(jrslt, LOADING))
 }
 
@@ -619,7 +614,7 @@ loading_cyclical<-function(period, startpos){
 #'
 #' @examples
 loading_periodic<-function(period, startpos){
-  jrslt<-.jcall("jdplus/ssf/implementations/Loading", "Ljdplus/ssf/ISsfLoading;", "periodic", as.integer(period), as.integer(startpos-1))
+  jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "periodic", as.integer(period), as.integer(startpos-1))
   return (rjd3toolkit::jd3Object(jrslt, LOADING))
 }
 
@@ -652,7 +647,7 @@ ssf<-function(initialization, dynamics, measurement){
 #' @export
 #'
 #' @examples
-arma<-function(name, ar, fixedar=F, ma, fixedma=F, var=1, fixedvar =FALSE){
+arma<-function(name, ar, fixedar=FALSE, ma, fixedma=FALSE, var=1, fixedvar =FALSE){
   jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "arma", name, as.double(ar), fixedar,
                 as.double(ma), fixedma, var, fixedvar)
   return (rjd3toolkit::jd3Object(jrslt, STATEBLOCK))
@@ -675,7 +670,6 @@ arima<-function(name, ar, diff, ma, var=1, fixed =FALSE){
   jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "arima", name, as.double(ar), as.double(diff), as.double(ma), var, fixed)
   return (rjd3toolkit::jd3Object(jrslt, STATEBLOCK))
 }
-
 
 #' Title
 #'
@@ -798,7 +792,7 @@ varreg<-function(name, x, stderr, scale=1, fixed=F){
 #' @export
 #'
 #' @examples
-td<-function(name, period, start, length, groups=c(1,2,3,4,5,6,0), contrast=TRUE, variance=1, fixed=FALSE){
+regtd<-function(name, period, start, length, groups=c(1,2,3,4,5,6,0), contrast=TRUE, variance=1, fixed=FALSE){
   jdomain<-rjd3toolkit::tsdomain_r2jd(period, startYear = start[1], startPeriod = start[2], length = length)
   jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "tdRegression", name, jdomain, as.integer(groups), contrast, variance, fixed)
   return (rjd3toolkit::jd3Object(jrslt, STATEBLOCK))

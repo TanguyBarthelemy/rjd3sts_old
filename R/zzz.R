@@ -10,5 +10,9 @@ NULL
 
   proto.dir <- system.file("proto", package = pkgname)
   RProtoBuf::readProtoFiles2(protoPath = proto.dir)
+  
+  # reload extractors
+  .jcall("demetra/information/InformationExtractors", "V", "reloadExtractors")
+  
 }
 
