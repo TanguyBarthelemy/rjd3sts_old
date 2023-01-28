@@ -800,7 +800,7 @@ regtd<-function(name, period, start, length, groups=c(1,2,3,4,5,6,0), contrast=T
 
 #' Title
 #'
-#' @param rslt 
+#' @param model 
 #'
 #' @return
 #' @export
@@ -817,105 +817,105 @@ smoothedstates<-function(model){
 
 #' Title
 #'
-#' @param rslt 
+#' @param model 
 #'
 #' @return
 #' @export
 #'
 #' @examples
-smoothedstatesstdev<-function(rslt){
-  if (! is(rslt, MODELESTIMATION))
+smoothedstatesstdev<-function(model){
+  if (! is(model, MODELESTIMATION))
     stop("Not a model")
-  if ( is.jnull(rslt$internal) ){
+  if ( is.jnull(model$internal) ){
     return(NULL)
   }
-  return(sqrt(rjd3toolkit::result(rslt, "ssf.smoothing.vstates")))
+  return(sqrt(rjd3toolkit::result(model, "ssf.smoothing.vstates")))
 }
 
 #' Title
 #'
-#' @param rslt 
+#' @param model 
 #'
 #' @return
 #' @export
 #'
 #' @examples
-filteredstates<-function(rslt){
-  if (! is(rslt, MODELESTIMATION))
+filteredstates<-function(model){
+  if (! is(model, MODELESTIMATION))
     stop("Not a model")
-  if ( is.jnull(rslt$internal) ){
+  if ( is.jnull(model$internal) ){
     return(NULL)
   }
-  return(rjd3toolkit::result(rslt, "ssf.filtered.states"))
+  return(rjd3toolkit::result(model, "ssf.filtered.states"))
 }
 
 #' Title
 #'
-#' @param rslt 
+#' @param model 
 #'
 #' @return
 #' @export
 #'
 #' @examples
-filteredstatesstdev<-function(rslt){
-  if (! is(rslt, MODELESTIMATION))
+filteredstatesstdev<-function(model){
+  if (! is(model, MODELESTIMATION))
     stop("Not a model")
-  if ( is.jnull(rslt$internal) ){
+  if ( is.jnull(model$internal) ){
     return(NULL)
   }
-  return(sqrt(rjd3toolkit::result(rslt, "ssf.filtered.vstates")))
+  return(sqrt(rjd3toolkit::result(model, "ssf.filtered.vstates")))
 }
 
 #' Title
 #'
-#' @param rslt 
+#' @param model 
 #'
 #' @return
 #' @export
 #'
 #' @examples
-filteringstatesstdev<-function(rslt){
-  if (! is(rslt, MODELESTIMATION))
+filteringstatesstdev<-function(model){
+  if (! is(model, MODELESTIMATION))
     stop("Not a model")
-  if ( is.jnull(rslt$internal) ){
+  if ( is.jnull(model$internal) ){
     return(NULL)
   }
-  return(sqrt(rjd3toolkit::result(rslt, "ssf.filtering.vstates")))
+  return(sqrt(rjd3toolkit::result(model, "ssf.filtering.vstates")))
 }
 
 #' Title
 #'
-#' @param rslt 
+#' @param model 
 #'
 #' @return
 #' @export
 #'
 #' @examples
-filteringstates<-function(rslt){
-  if (! is(rslt, MODELESTIMATION))
+filteringstates<-function(model){
+  if (! is(model, MODELESTIMATION))
     stop("Not a model")
-  if ( is.jnull(rslt$internal) ){
+  if ( is.jnull(model$internal) ){
     return(NULL)
   }
-  return(rjd3toolkit::result(rslt, "ssf.filtering.states"))
+  return(rjd3toolkit::result(model, "ssf.filtering.states"))
 }
 
 #' Get Parameters of SSF Model
 #'
-#' @param rslt 
+#' @param model 
 #'
 #' @return
 #' @export
 #'
 #' @examples
-parameters<-function(rslt){
-  if (! is(rslt, MODELESTIMATION))
+parameters<-function(model){
+  if (! is(model, MODELESTIMATION))
     stop("Not a model")
-  if ( is.jnull(rslt$internal) ){
+  if ( is.jnull(model$internal) ){
     return(NULL)
   }
-  res = rjd3toolkit::result(rslt, "parameters")
-  names(res) <- rjd3toolkit::result(rslt, "parametersnames")
+  res = rjd3toolkit::result(model, "parameters")
+  names(res) <- rjd3toolkit::result(model, "parametersnames")
   return()
 }
 
