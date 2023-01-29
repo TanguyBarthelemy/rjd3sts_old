@@ -9,10 +9,10 @@ Description: Interface around 'JDemetra+ 3.x' (<https://github.com/jdemetra/jdem
  It offers access to several functions around state space modelss and structural time series.
 Depends:
   R (>= 3.6.0),
+  rjd3toolkit (>= 0.7.0)
 Imports:
   rJava (>= 1.0-6),
   RProtoBuf (>= 0.4.17),
-  rjd3toolkit (>= 0.7.0),
   methods
 SystemRequirements: Java JRE 17 or higher
 License: EUPL
