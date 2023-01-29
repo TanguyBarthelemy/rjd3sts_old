@@ -7,7 +7,7 @@
 smoothedstates(model)
 }
 \arguments{
-\item{rslt}{}
+\item{model}{}
 }
 \description{
 Title

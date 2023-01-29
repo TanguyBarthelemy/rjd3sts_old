@@ -4,10 +4,10 @@
 \alias{filteredstatesstdev}
 \title{Title}
 \usage{
-filteredstatesstdev(rslt)
+filteredstatesstdev(model)
 }
 \arguments{
-\item{rslt}{}
+\item{model}{}
 }
 \description{
 Title

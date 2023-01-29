@@ -4,10 +4,10 @@
 \alias{parameters}
 \title{Get Parameters of SSF Model}
 \usage{
-parameters(rslt)
+parameters(model)
 }
 \arguments{
-\item{rslt}{}
+\item{model}{}
 }
 \description{
 Get Parameters of SSF Model

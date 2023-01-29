@@ -4,10 +4,10 @@
 \alias{smoothedstatesstdev}
 \title{Title}
 \usage{
-smoothedstatesstdev(rslt)
+smoothedstatesstdev(model)
 }
 \arguments{
-\item{rslt}{}
+\item{model}{}
 }
 \description{
 Title
