@@ -1,28 +1,26 @@
 Package: rjd3sts
 Type: Package
-Title: Interface to 'JDemetra+ 3.0' Seasonal Adjustment Software
+Title: State Space Framework and Structural Time Series with 'JDemetra+ 3.0'
 Version: 0.5.1
 Authors@R: c(
   person("Jean", "Palate", role = c("aut", "cre"),
                 email = "jean.palate@nbb.be"))
-Description: Interface around 'JDemetra+ 3.x' sa-toolkit (<https://github.com/jdemetra/jdemetra-core>), STACE project 
+Description: Interface around 'JDemetra+ 3.x' (<https://github.com/jdemetra/jdemetra-core>) seasonal adjustment software, STACE project.
+ It offers access to several functions around state space modelss and structural time series.
 Depends:
   R (>= 3.6.0),
+  rjd3toolkit (>= 0.7.0)
 Imports:
   rJava (>= 1.0-6),
   RProtoBuf (>= 0.4.17),
-  rjd3toolkit (>= 0.5.1),
-  rjd3modelling (>= 0.5.1),
-  rjd3sa (>= 0.5.1)
-SystemRequirements: Java SE 8 or higher
+  methods
+SystemRequirements: Java JRE 17 or higher
 License: EUPL
-URL: https://github.com/jdemetra/rjd3sa
+URL: https://github.com/palatej/rjd3sts
 LazyData: TRUE
-Suggests:
-    knitr,
-    rmarkdown
-RoxygenNote: 7.2.1
-BugReports: https://github.com/jdemetra/rjdemetra3/issues
+RoxygenNote: 7.2.3
+BugReports: https://github.com/palatej/rjd3sts/issues
+Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
 Collate: 
     'utils.R'
@@ -32,4 +30,3 @@ Collate:
     'jd3_stsoutliers.R'
     'protobuf.R'
     'zzz.R'
-VignetteBuilder: knitr

@@ -2,9 +2,9 @@
 % Please edit documentation in R/jd3_ssf.R
 \name{arma}
 \alias{arma}
-\title{Title}
+\title{Autoregressive Moving Average (ARMA) Model}
 \usage{
-arma(name, ar, fixedar = F, ma, fixedma = F, var = 1, fixedvar = FALSE)
+arma(name, ar, fixedar = FALSE, ma, fixedma = FALSE, var = 1, fixedvar = FALSE)
 }
 \arguments{
 \item{name}{}
@@ -22,5 +22,5 @@ arma(name, ar, fixedar = F, ma, fixedma = F, var = 1, fixedvar = FALSE)
 \item{fixedvar}{}
 }
 \description{
-Title
+Autoregressive Moving Average (ARMA) Model
 }
