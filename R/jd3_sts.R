@@ -13,7 +13,7 @@ NULL
 #'
 #' @examples
 #'  x<-rjd3toolkit::retail$BookStores
-#'  #sts(x)
+#'  sts(x)
 sts<-function(y, X=NULL, X.td=NULL, level=1, slope=1, cycle=-1, noise=1
               , seasonal=c("Trigonometric", "Dummy", "Crude", "HarrisonStevens", "Fixed", "Unused"), diffuse.regs=T, tol=1e-9){
   
@@ -27,22 +27,32 @@ sts<-function(y, X=NULL, X.td=NULL, level=1, slope=1, cycle=-1, noise=1
   }
   jts<-rjd3toolkit::.r2jd_ts(y)
   jx<-rjd3toolkit::.r2jd_matrix(X)
-  jsts<-.jcall("demetra/sts/r/Bsm", "Ldemetra/sts/BasicStructuralModel;", "process", jts, jx,
+  jsts<-.jcall("jdplus/sts/base/r/Bsm", "Ljdplus/sts/base/core/BasicStructuralModel;", "process", jts, jx,
               as.integer(level), as.integer(slope), as.integer(cycle), as.integer(noise), seasonal, as.logical(diffuse.regs), tol)
-  buffer<-.jcall("demetra/sts/r/Bsm", "[B", "toBuffer", jsts)
+  buffer<-.jcall("jdplus/sts/base/r/Bsm", "[B", "toBuffer", jsts)
   p<-RProtoBuf::read(sts.Bsm, buffer)
   return (p2r_sts_rslts(p))
 }
 
 #' Title
 #'
-#' @inheritParams sts
+#' @param y 
+#' @param period 
+#' @param X 
+#' @param X.td 
+#' @param level 
+#' @param slope 
+#' @param cycle 
+#' @param noise 
+#' @param seasonal 
+#' @param diffuse.regs 
+#' @param tol 
 #'
 #' @return
 #' @export
 #'
 #' @examples
-sts.raw<-function(y, period=NA, X=NULL, X.td=NULL, level=1, slope=1, cycle=-1, noise=1
+sts_raw<-function(y, period=NA, X=NULL, X.td=NULL, level=1, slope=1, cycle=-1, noise=1
                   , seasonal=c("Trigonometric", "Dummy", "Crude", "HarrisonStevens", "Fixed", "Unused"), diffuse.regs=T, tol=1e-9){
   
   data<-as.numeric(y)
@@ -71,11 +81,11 @@ sts.raw<-function(y, period=NA, X=NULL, X.td=NULL, level=1, slope=1, cycle=-1, n
   }
   # create the equation 
   eq<-equation("eq")
-  add.equation(eq, "ll")
-  add.equation(eq, "s")
-  add.equation(eq, "n")
+  add_equation(eq, "ll")
+  add_equation(eq, "s")
+  add_equation(eq, "n")
   if (! is.null(X)){
-    add.equation(eq, "X")
+    add_equation(eq, "X")
   }
   add(bsm, eq)
   #estimate the model
@@ -102,12 +112,13 @@ sts.raw<-function(y, period=NA, X=NULL, X.td=NULL, level=1, slope=1, cycle=-1, n
 #' @export
 #'
 #' @examples
-sts.forecast<-function(y, model=c("none", "td2", "td3", "td7", "full"), nf=12){
+#' fcasts<-sts_forecast(rjd3toolkit::ABS$X0.2.09.10.M)
+sts_forecast<-function(y, model=c("none", "td2", "td3", "td7", "full"), nf=12){
   model<-match.arg(model)
   if (!is.ts(y)){
     stop("y must be a time series")
   }
-  jf<-.jcall("demetra/sts/r/Bsm", "Ldemetra/math/matrices/Matrix;", "forecast", rjd3toolkit::.r2jd_ts(y), model, as.integer((nf)))
+  jf<-.jcall("jdplus/sts/base/r/Bsm", "Ljdplus/toolkit/base/api/math/matrices/Matrix;", "forecast", rjd3toolkit::.r2jd_ts(y), model, as.integer((nf)))
   return (rjd3toolkit::.jd2r_matrix(jf))
   
 }

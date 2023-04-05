@@ -20,11 +20,12 @@ STATEBLOCK<-'JD3_SsfStateBlock'
 #' @export
 #'
 #' @examples
-add.equation<-function(equation, item, coeff=1, fixed=TRUE, loading=NULL){
+#' 
+add_equation<-function(equation, item, coeff=1, fixed=TRUE, loading=NULL){
   if (! is(equation, EQUATION))
     stop("Not an equation")
   if (is.null(loading))
-    .jcall(equation$internal, "V", "add", item, coeff, as.logical(fixed), .jnull("jdplus/ssf/ISsfLoading"))
+    .jcall(equation$internal, "V", "add", item, coeff, as.logical(fixed), .jnull("jdplus/toolkit/base/core/ssf/ISsfLoading"))
   else if (is(loading, LOADING))
     .jcall(equation$internal, "V", "add", item, coeff, as.logical(fixed), loading$internal)
   else
@@ -119,7 +120,7 @@ loading<-function(object, obs=1){
   if ( is.jnull(object$internal)){
     return
   }else{
-      jm<-.jcall(object$internal, "Ldemetra/math/matrices/Matrix;", "loading", as.integer(obs-1))
+      jm<-.jcall(object$internal, "Ljdplus/toolkit/base/api/math/matrices/Matrix;", "loading", as.integer(obs-1))
       return (rjd3toolkit::.jd2r_matrix(jm))
   }
 }
@@ -177,7 +178,7 @@ estimate<-function(model, data, marginal=F, concentrated=T,
     if (! is.null(initialParameters))
       jparams<-.jarray(initialParameters)
     jdata<-rjd3toolkit::.r2jd_matrix(data)
-    jrslt<-.jcall("rssf/CompositeModels", "Lrssf/CompositeModels$Results;", "estimate",model$internal, jdata, marginal, concentrated, initialization, optimizer, precision, jparams)
+    jrslt<-.jcall("jdplus/sts/base/r/CompositeModels", "Ljdplus/sts/base/r/CompositeModels$Results;", "estimate",model$internal, jdata, marginal, concentrated, initialization, optimizer, precision, jparams)
     return (rjd3toolkit::.jd3_object(jrslt, MODELESTIMATION, T))
   }
 }
@@ -189,7 +190,7 @@ compute<-function(model, data, parameters, marginal=FALSE, concentrated=TRUE){
     return(NULL)
   }else{
     jdata<-rjd3toolkit::.r2jd_matrix(data)
-    jrslt<-.jcall("rssf/CompositeModels", "Lrssf/CompositeModels$Results;", "compute", model$internal, jdata, .jarray(parameters), marginal, concentrated)
+    jrslt<-.jcall("jdplus/sts/base/r/CompositeModels", "Ljdplus/sts/base/r/CompositeModels$Results;", "compute", model$internal, jdata, .jarray(parameters), marginal, concentrated)
     return(rjd3toolkit::.jd3_object(jrslt, MODELESTIMATION, T))
   }
 }
@@ -226,7 +227,7 @@ compute<-function(model, data, parameters, marginal=FALSE, concentrated=TRUE){
 #' @examples
 ar<-function(name, ar, fixedar=FALSE, variance=.01, fixedvariance=FALSE, nlags=0, zeroinit=FALSE){
 
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "ar", name, .jarray(ar), fixedar, variance, fixedvariance, as.integer(nlags), zeroinit)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "ar", name, .jarray(ar), fixedar, variance, fixedvariance, as.integer(nlags), zeroinit)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -234,7 +235,7 @@ ar<-function(name, ar, fixedar=FALSE, variance=.01, fixedvariance=FALSE, nlags=0
 #' @param nfcasts integer specifying how many forecasts of the state variable are needed
 #' @export
 ar2<-function(name, ar, fixedar=FALSE, variance=.01, fixedvariance=FALSE, nlags=0, nfcasts=0){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "ar", name, .jarray(ar), fixedar, variance, fixedvariance, as.integer(nlags), as.integer(nfcasts))
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "ar", name, .jarray(ar), fixedar, variance, fixedvariance, as.integer(nlags), as.integer(nfcasts))
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -252,7 +253,7 @@ ar2<-function(name, ar, fixedar=FALSE, variance=.01, fixedvariance=FALSE, nlags=
 #'
 #' @examples
 cycle<-function(name, factor=.9, period=60, fixed=F, variance=.01, fixedvariance=FALSE){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "cycle", name, factor, period, fixed, variance, fixedvariance)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "cycle", name, factor, period, fixed, variance, fixedvariance)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -269,7 +270,7 @@ cycle<-function(name, factor=.9, period=60, fixed=F, variance=.01, fixedvariance
 #'
 #' @examples
 periodic<-function(name, period, harmonics, variance=.01, fixedvariance=FALSE){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "periodicComponent", name, period, .jarray(as.integer(harmonics)), variance, fixedvariance)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "periodicComponent", name, period, .jarray(as.integer(harmonics)), variance, fixedvariance)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -287,7 +288,7 @@ periodic<-function(name, period, harmonics, variance=.01, fixedvariance=FALSE){
 #'
 #' @examples
 sae<-function(name, ar, fixedar=FALSE, lag=1, zeroinit=FALSE){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "sae", name, .jarray(ar), fixedar, as.integer(lag), zeroinit)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "sae", name, .jarray(ar), fixedar, as.integer(lag), zeroinit)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -308,14 +309,14 @@ sae<-function(name, ar, fixedar=FALSE, lag=1, zeroinit=FALSE){
 #'
 #' @examples
 msae<-function(name, nwaves, ar, fixedar=TRUE, lag=1){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "waveSpecificSurveyError", name, as.integer(nwaves), rjd3toolkit::.r2jd_matrix(ar), fixedar, as.integer(lag))
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "waveSpecificSurveyError", name, as.integer(nwaves), rjd3toolkit::.r2jd_matrix(ar), fixedar, as.integer(lag))
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
 #' @rdname msae
 #' @export
 msae2<-function(name, vars, fixedvars=F, ar, fixedar=T, lag=1){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "waveSpecificSurveyError", name, vars, fixedvars, rjd3toolkit::.r2jd_matrix(ar), fixedar, as.integer(lag))
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "waveSpecificSurveyError", name, vars, fixedvars, rjd3toolkit::.r2jd_matrix(ar), fixedar, as.integer(lag))
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -323,7 +324,7 @@ msae2<-function(name, vars, fixedvars=F, ar, fixedar=T, lag=1){
 #' @rdname msae
 #' @export
 msae3<-function(name, vars, fixedvars=F, ar, fixedar=T, k, lag=1){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "waveSpecificSurveyError", name, vars, fixedvars, .jarray(ar), fixedar, rjd3toolkit::.r2jd_matrix(k), as.integer(lag))
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "waveSpecificSurveyError", name, vars, fixedvars, .jarray(ar), fixedar, rjd3toolkit::.r2jd_matrix(k), as.integer(lag))
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -346,7 +347,7 @@ msae3<-function(name, vars, fixedvars=F, ar, fixedar=T, k, lag=1){
 #'
 #' @examples
 locallevel<-function(name, variance=.01, fixed=FALSE, initial=NaN){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "localLevel", name, variance, fixed, initial)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "localLevel", name, variance, fixed, initial)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -371,7 +372,7 @@ locallevel<-function(name, variance=.01, fixed=FALSE, initial=NaN){
 #'
 #' @examples
 locallineartrend<-function(name, levelVariance=.01, slopevariance=.01, fixedLevelVariance=FALSE, fixedSlopeVariance=FALSE ){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "localLinearTrend", name, levelVariance, slopevariance, fixedLevelVariance, fixedSlopeVariance)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "localLinearTrend", name, levelVariance, slopevariance, fixedLevelVariance, fixedSlopeVariance)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -389,7 +390,7 @@ locallineartrend<-function(name, levelVariance=.01, slopevariance=.01, fixedLeve
 #' @examples
 seasonal<-function(name, period, type=c("Trigonometric", "Crude", "HarrisonStevens", "Dummy"), variance=.01, fixed=FALSE){
   type=match.arg(type)
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "seasonalComponent", name, type, as.integer(period), variance, fixed)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "seasonalComponent", name, type, as.integer(period), variance, fixed)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -404,7 +405,7 @@ seasonal<-function(name, period, type=c("Trigonometric", "Crude", "HarrisonSteve
 #'
 #' @examples
 noise<-function(name, variance=.01, fixed=FALSE){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "noise", name, variance, fixed)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "noise", name, variance, fixed)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -419,8 +420,8 @@ noise<-function(name, variance=.01, fixed=FALSE){
 #' @export
 #'
 #' @examples
-varnoise<-function(name, std, scale=1, fixed=FALSE){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "noise", name, as.double(std), scale, fixed)
+var_noise<-function(name, std, scale=1, fixed=FALSE){
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "noise", name, as.double(std), scale, fixed)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -436,8 +437,8 @@ varnoise<-function(name, std, scale=1, fixed=FALSE){
 #' @export
 #'
 #' @examples
-varlocallevel<-function(name, std, scale=1, fixed=FALSE, initial=NaN){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "localLevel", name, as.double(std), scale, fixed, initial)
+var_locallevel<-function(name, std, scale=1, fixed=FALSE, initial=NaN){
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "localLevel", name, as.double(std), scale, fixed, initial)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -455,14 +456,14 @@ varlocallevel<-function(name, std, scale=1, fixed=FALSE, initial=NaN){
 #' @export
 #'
 #' @examples
-varlocallineartrend<-function(name, lstd, sstd=NULL, levelScale=1, slopeScale=1, fixedLevelScale=FALSE, fixedSlopeScale=FALSE ){
+var_locallineartrend<-function(name, lstd, sstd=NULL, levelScale=1, slopeScale=1, fixedLevelScale=FALSE, fixedSlopeScale=FALSE ){
   
   if (is.null(sstd)){
     jsstd<-.jnull("[D")
   }else{
     jsstd<-.jarray(sstd)
   }
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "localLinearTrend", name, lstd, jsstd, levelScale, slopeScale,
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "localLinearTrend", name, lstd, jsstd, levelScale, slopeScale,
                 fixedLevelScale, fixedSlopeScale)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
@@ -480,10 +481,10 @@ varlocallineartrend<-function(name, lstd, sstd=NULL, levelScale=1, slopeScale=1,
 #' @export
 #'
 #' @examples
-varseasonal<-function(name, period, type=c("Trigonometric", "Crude", "HarrisonStevens", "Dummy"), std, scale=1, fixed=FALSE){
+var_seasonal<-function(name, period, type=c("Trigonometric", "Crude", "HarrisonStevens", "Dummy"), std, scale=1, fixed=FALSE){
   
   type=match.arg(type)
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "seasonalComponent", name, type, as.integer(period), as.double(std), scale, fixed)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "seasonalComponent", name, type, as.integer(period), as.double(std), scale, fixed)
   
   
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
@@ -496,7 +497,7 @@ varseasonal<-function(name, period, type=c("Trigonometric", "Crude", "HarrisonSt
 #'
 #' @examples
 model<-function(){
-  jrslt<-.jnew("jdplus/msts/CompositeModel")
+  jrslt<-.jnew("jdplus/sts/base/core/msts/CompositeModel")
   return (rjd3toolkit::.jd3_object(jrslt, MODEL))
 }
 
@@ -511,7 +512,7 @@ model<-function(){
 #'
 #' @examples
 equation<-function(name, variance=0, fixed=T){
-  jrslt<-.jnew("jdplus/msts/ModelEquation", name, variance, fixed)
+  jrslt<-.jnew("jdplus/sts/base/core/msts/ModelEquation", name, variance, fixed)
   return (rjd3toolkit::.jd3_object(jrslt, EQUATION))
 }
 
@@ -527,26 +528,26 @@ equation<-function(name, variance=0, fixed=T){
 #' @examples
 loading<-function(pos=NULL, weights=NULL){
   if (is.null(pos)){
-    jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(0))
+    jrslt<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "fromPosition", as.integer(0))
     return (rjd3toolkit::.jd3_object(jrslt, LOADING))
   }
   else if (length(pos) == 1){ 
     if (is.null(weights)){
-      jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(pos))
+      jrslt<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "fromPosition", as.integer(pos))
     }else{
       if (length(pos) != length(weights)){
         return (NULL)
       }
-      jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "from", as.integer(pos), weights[1])
+      jrslt<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "from", as.integer(pos), weights[1])
     }
     return (rjd3toolkit::.jd3_object(jrslt, LOADING))
   }else{
     if (is.null(weights))
-      jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPositions", as.integer(pos))
+      jrslt<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "fromPositions", as.integer(pos))
     else{
       if (length(pos) != length(weights))
         return (NULL)
-      jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "from", as.integer(pos), weights)
+      jrslt<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "from", as.integer(pos), weights)
     }
     return (rjd3toolkit::.jd3_object(jrslt, LOADING))
   }
@@ -561,16 +562,16 @@ loading<-function(pos=NULL, weights=NULL){
 #' @export
 #'
 #' @examples
-varloading<-function(pos, weights){
+var_loading<-function(pos, weights){
   if (is.null(pos)){
-    jl<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(0))
+    jl<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "fromPosition", as.integer(0))
   }
   else if (length(pos) == 1){
-    jl<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPosition", as.integer(pos))
+    jl<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "fromPosition", as.integer(pos))
   }else{
-    jl<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "fromPositions", as.integer(pos))
+    jl<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "fromPositions", as.integer(pos))
   }
-  jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "rescale", jl, as.numeric(weights))
+  jrslt<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "rescale", jl, as.numeric(weights))
   return (rjd3toolkit::.jd3_object(jrslt, LOADING))
 }
 
@@ -584,9 +585,9 @@ varloading<-function(pos, weights){
 #' @examples
 loading_sum<-function(length=0){
   if (length == 0)
-    jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "sum")
+    jrslt<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "sum")
   else
-    jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "createPartialSum", as.integer(length))
+    jrslt<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "createPartialSum", as.integer(length))
   return (rjd3toolkit::.jd3_object(jrslt, LOADING))
 }
 
@@ -600,7 +601,7 @@ loading_sum<-function(length=0){
 #'
 #' @examples
 loading_cyclical<-function(period, startpos){
-  jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "cyclical", as.integer(period), as.integer(startpos-1))
+  jrslt<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "cyclical", as.integer(period), as.integer(startpos-1))
   return (rjd3toolkit::.jd3_object(jrslt, LOADING))
 }
 
@@ -614,7 +615,7 @@ loading_cyclical<-function(period, startpos){
 #'
 #' @examples
 loading_periodic<-function(period, startpos){
-  jrslt<-.jcall("jdplus/ssf/basic/Loading", "Ljdplus/ssf/ISsfLoading;", "periodic", as.integer(period), as.integer(startpos-1))
+  jrslt<-.jcall("jdplus/toolkit/base/core/ssf/basic/Loading", "Ljdplus/toolkit/base/core/ssf/ISsfLoading;", "periodic", as.integer(period), as.integer(startpos-1))
   return (rjd3toolkit::.jd3_object(jrslt, LOADING))
 }
 
@@ -629,7 +630,7 @@ loading_periodic<-function(period, startpos){
 #'
 #' @examples
 ssf<-function(initialization, dynamics, measurement){
-  jrslt<-.jcall("rssf/Ssf", "Ljdplus/ssf/univariate/Issf;", "of", initialization$internal, dynamics$internal, measurement$internal)
+  jrslt<-.jcall("rssf/Ssf", "Ljdplus/toolkit/base/core/ssf/univariate/Issf;", "of", initialization$internal, dynamics$internal, measurement$internal)
   return (rjd3toolkit::.jd3_object(jrslt, SSF, T))
 }
 
@@ -648,7 +649,7 @@ ssf<-function(initialization, dynamics, measurement){
 #'
 #' @examples
 arma<-function(name, ar, fixedar=FALSE, ma, fixedma=FALSE, var=1, fixedvar =FALSE){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "arma", name, as.double(ar), fixedar,
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "arma", name, as.double(ar), fixedar,
                 as.double(ma), fixedma, var, fixedvar)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
@@ -667,7 +668,7 @@ arma<-function(name, ar, fixedar=FALSE, ma, fixedma=FALSE, var=1, fixedvar =FALS
 #'
 #' @examples
 arima<-function(name, ar, diff, ma, var=1, fixed =FALSE){
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "arima", name, as.double(ar), as.double(diff), as.double(ma), var, fixed)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "arima", name, as.double(ar), as.double(diff), as.double(ma), var, fixed)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -691,7 +692,7 @@ sarima<-function(name, period, orders, seasonal, parameters=NULL, fixedparameter
     jp<-.jnull("[D")
   else
     jp<-.jarray(parameters)
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "sarima", name, as.integer(period), as.integer(orders), as.integer(seasonal), jp, fixedparameters, var, fixedvariance)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "sarima", name, as.integer(period), as.integer(orders), as.integer(seasonal), jp, fixedparameters, var, fixedvariance)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -707,7 +708,7 @@ sarima<-function(name, period, orders, seasonal, parameters=NULL, fixedparameter
 #'
 #' @examples
 cumul<-function(name, core, period, start=0){
-  jrslt<-.jcall("jdplus/msts/DerivedModels", "Ljdplus/msts/StateItem;", "cumulator", name, core$internal
+  jrslt<-.jcall("jdplus/sts/base/core/msts/DerivedModels", "Ljdplus/sts/base/core/msts/StateItem;", "cumulator", name, core$internal
                 , as.integer(period), as.integer(start))
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
@@ -728,8 +729,8 @@ aggregation<-function(name, components){
   for (i in 1:length(components)){
     plist[[i]]<-components[[i]]$internal
   }
-  jcmps<-.jarray(plist, contents.class = "jdplus/msts/StateItem")
-  jrslt<-.jcall("jdplus/msts/DerivedModels", "Ljdplus/msts/StateItem;", "aggregation", name, jcmps)
+  jcmps<-.jarray(plist, contents.class = "jdplus/sts/base/core/msts/StateItem")
+  jrslt<-.jcall("jdplus/sts/base/core/msts/DerivedModels", "Ljdplus/sts/base/core/msts/StateItem;", "aggregation", name, jcmps)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -747,9 +748,9 @@ aggregation<-function(name, components){
 reg<-function(name, x, var=NULL, fixed=F){
   
   if (is.null(var)){
-    jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "regression", name, rjd3toolkit::.r2jd_matrix(x))
+    jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "regression", name, rjd3toolkit::.r2jd_matrix(x))
   }else{
-    jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "timeVaryingRegression", name, rjd3toolkit::.r2jd_matrix(x), as.numeric(var), fixed)
+    jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "timeVaryingRegression", name, rjd3toolkit::.r2jd_matrix(x), as.numeric(var), fixed)
   }
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
@@ -769,10 +770,10 @@ reg<-function(name, x, var=NULL, fixed=F){
 #'  x<-rjd3toolkit::retail$BookStores
 #'  std<-rep(1, length(x))
 #'  std[c(20, 50, 150)]<-5
-#'  v<-varreg("vx", x, std, 0.1)
-varreg<-function(name, x, stderr, scale=1, fixed=F){
+#'  v<-var_reg("vx", x, std, 0.1)
+var_reg<-function(name, x, stderr, scale=1, fixed=F){
   
-   jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "timeVaryingRegression", name
+   jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "timeVaryingRegression", name
                  , as.numeric(x), as.numeric(stderr), as.numeric(scale), fixed)
    return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
@@ -792,9 +793,9 @@ varreg<-function(name, x, stderr, scale=1, fixed=F){
 #' @export
 #'
 #' @examples
-regtd<-function(name, period, start, length, groups=c(1,2,3,4,5,6,0), contrast=TRUE, variance=1, fixed=FALSE){
+reg_td<-function(name, period, start, length, groups=c(1,2,3,4,5,6,0), contrast=TRUE, variance=1, fixed=FALSE){
   .jdomain<-rjd3toolkit::.r2jd_tsdomain(period, startYear = start[1], startPeriod = start[2], length = length)
-  jrslt<-.jcall("jdplus/msts/AtomicModels", "Ljdplus/msts/StateItem;", "tdRegression", name, .jdomain, as.integer(groups), contrast, variance, fixed)
+  jrslt<-.jcall("jdplus/sts/base/core/msts/AtomicModels", "Ljdplus/sts/base/core/msts/StateItem;", "tdRegression", name, .jdomain, as.integer(groups), contrast, variance, fixed)
   return (rjd3toolkit::.jd3_object(jrslt, STATEBLOCK))
 }
 
@@ -806,7 +807,7 @@ regtd<-function(name, period, start, length, groups=c(1,2,3,4,5,6,0), contrast=T
 #' @export
 #'
 #' @examples
-smoothedstates<-function(model){
+smoothed_states<-function(model){
   if (! is(model, MODELESTIMATION))
     stop("Not a model")
   if ( is.jnull(model$internal) ){
@@ -823,7 +824,7 @@ smoothedstates<-function(model){
 #' @export
 #'
 #' @examples
-smoothedstatesstdev<-function(model){
+smoothed_states_stdev<-function(model){
   if (! is(model, MODELESTIMATION))
     stop("Not a model")
   if ( is.jnull(model$internal) ){
@@ -840,7 +841,7 @@ smoothedstatesstdev<-function(model){
 #' @export
 #'
 #' @examples
-filteredstates<-function(model){
+filtered_states<-function(model){
   if (! is(model, MODELESTIMATION))
     stop("Not a model")
   if ( is.jnull(model$internal) ){
@@ -857,7 +858,7 @@ filteredstates<-function(model){
 #' @export
 #'
 #' @examples
-filteredstatesstdev<-function(model){
+filtered_states_stdev<-function(model){
   if (! is(model, MODELESTIMATION))
     stop("Not a model")
   if ( is.jnull(model$internal) ){
@@ -874,7 +875,7 @@ filteredstatesstdev<-function(model){
 #' @export
 #'
 #' @examples
-filteringstatesstdev<-function(model){
+filtering_states_stdev<-function(model){
   if (! is(model, MODELESTIMATION))
     stop("Not a model")
   if ( is.jnull(model$internal) ){
@@ -891,7 +892,7 @@ filteringstatesstdev<-function(model){
 #' @export
 #'
 #' @examples
-filteringstates<-function(model){
+filtering_states<-function(model){
   if (! is(model, MODELESTIMATION))
     stop("Not a model")
   if ( is.jnull(model$internal) ){

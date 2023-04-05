@@ -17,8 +17,8 @@ NULL
 #'
 #' @examples
 #'  x<-rjd3toolkit::retail$BookStores
-#'  sts.outliers(x)
-sts.outliers<-function(y, period=NA, X=NULL, X.td=NULL, level=1, slope=1, noise=1, seasonal=c("Trigonometric", "Dummy", "Crude", "HarrisonStevens", "Fixed", "Unused"),
+#'  sts_outliers(x)
+sts_outliers<-function(y, period=NA, X=NULL, X.td=NULL, level=1, slope=1, noise=1, seasonal=c("Trigonometric", "Dummy", "Crude", "HarrisonStevens", "Fixed", "Unused"),
               ao=T, ls=T, so=F, 
               cv=0, tcv=0, estimation.forward=c("Score", "Point", "Full"), 
               estimation.backward=c("Point", "Score", "Full")){
@@ -45,7 +45,7 @@ sts.outliers<-function(y, period=NA, X=NULL, X.td=NULL, level=1, slope=1, noise=
   }
       
   
-  jsts<-.jcall("demetra/sts/r/StsOutliersDetection", "Ldemetra/sts/r/StsOutliersDetection$Results;", "process", data, as.integer(period), 
+  jsts<-.jcall("jdplus/sts/base/r/StsOutliersDetection", "Ljdplus/sts/base/r/StsOutliersDetection$Results;", "process", data, as.integer(period), 
               as.integer(level), as.integer(slope), as.integer(noise), seasonal, rjd3toolkit::.r2jd_matrix(X),
               ao, ls, so, cv, tcv, estimation.forward, estimation.backward)
   model<-list(
